@@ -1,0 +1,32 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
+    id 'application'
+}
+
+group = 'com.awscdk'
+version = '1.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'software.constructs:constructs:10.1.197'
+    implementation 'software.amazon.awscdk:aws-cdk-lib:2.56.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+}
+
+application {
+    mainClassName = 'MainKt'
+}
