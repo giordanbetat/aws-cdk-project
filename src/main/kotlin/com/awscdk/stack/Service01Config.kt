@@ -1,22 +1,25 @@
 package com.awscdk.stack
 
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.RemovalPolicy;
-import software.constructs.Construct;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
-import software.amazon.awscdk.services.ecs.*;
-import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
-import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions;
-import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
-import software.amazon.awscdk.services.logs.LogGroup;
+import software.amazon.awscdk.*
+import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps
+import software.amazon.awscdk.services.ecs.*
+import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService
+import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions
+import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck
+import software.amazon.awscdk.services.logs.LogGroup
+import software.constructs.Construct
+
 
 class Service01Config(scope: Construct, id: String, props: StackProps?, cluster: Cluster) :
     Stack(scope, id, props) {
     constructor(scope: Construct, id: String, cluster: Cluster) : this(scope, id, null, cluster)
 
     init {
+        val envVariables: MutableMap<String, String> = HashMap()
+        envVariables["SPRING_DATASOURCE_URL"] = ("jdbc:mariadb://" + Fn.importValue("rds-endpoint")
+                + ":3306/aws_project01?createDatabaseIfNotExist=true")
+        envVariables["SPRING_DATASOURCE_USERNAME"] = "admin"
+        envVariables["SPRING_DATASOURCE_PASSWORD"] = Fn.importValue("rds-password")
         val service01 = ApplicationLoadBalancedFargateService.Builder.create(this, "ALB01")
             .serviceName("service-01")
             .cluster(cluster)
@@ -42,12 +45,13 @@ class Service01Config(scope: Construct, id: String, props: StackProps?, cluster:
                                 .build()
                         )
                     )
+                    .environment(envVariables)
                     .build()
             )
             .publicLoadBalancer(true)
             .build()
         service01.targetGroup.configureHealthCheck(
-            HealthCheck.builder()
+            HealthCheck.Builder()
                 .path("/actuator/health")
                 .port("8080")
                 .healthyHttpCodes("200")
