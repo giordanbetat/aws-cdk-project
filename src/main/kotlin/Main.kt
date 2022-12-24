@@ -1,8 +1,5 @@
 
-import com.awscdk.stack.ClusterConfig
-import com.awscdk.stack.RdsConfig
-import com.awscdk.stack.Service01Config
-import com.awscdk.stack.VpcConfig
+import com.awscdk.stack.*
 import software.amazon.awscdk.App
 
 
@@ -17,9 +14,12 @@ fun main(args: Array<String>) {
     val rdsConfig = RdsConfig(app, "Rds", vpcConfig.vpc)
     rdsConfig.addDependency(vpcConfig)
 
+    val snsConfig = SnsConfig(app, "Sns")
+
     val service01Config = Service01Config(app, "Service01", clusterConfig.cluster)
     service01Config.addDependency(clusterConfig)
     service01Config.addDependency(rdsConfig)
+    service01Config.addDependency(snsConfig);
 
     app.synth()
 }
