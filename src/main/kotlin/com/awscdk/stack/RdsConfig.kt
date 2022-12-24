@@ -30,7 +30,7 @@ class RdsConfig (scope: Construct, id: String, props: StackProps?, vpc: Vpc) : S
                 Credentials.fromUsername(
                     "admin",
                     CredentialsFromUsernameOptions.builder()
-                        .password(SecretValue.unsafePlainText(databasePassword.valueAsString))
+                        .password(SecretValue.Builder.create(databasePassword.valueAsString).build())
                         .build()
                 )
             )
