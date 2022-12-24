@@ -1,20 +1,25 @@
 
-import com.awscdk.stack.ClusterStackConfig
-import com.awscdk.stack.Service01StackConfig
-import com.awscdk.stack.VpcStackConfig
+import com.awscdk.stack.ClusterConfig
+import com.awscdk.stack.RdsConfig
+import com.awscdk.stack.Service01Config
+import com.awscdk.stack.VpcConfig
 import software.amazon.awscdk.App
 
 
 fun main(args: Array<String>) {
     val app = App()
 
-    val vpcStack = VpcStackConfig(app, "Vpc")
+    val vpcConfig = VpcConfig(app, "Vpc")
 
-    val clusterStack = ClusterStackConfig(app, "Cluster", vpcStack.vpc)
-    clusterStack.addDependency(vpcStack)
+    val clusterConfig = ClusterConfig(app, "Cluster", vpcConfig.vpc)
+    clusterConfig.addDependency(vpcConfig)
 
-    val service01Stack = Service01StackConfig(app, "Service01", clusterStack.cluster)
-    service01Stack.addDependency(clusterStack)
+    val rdsConfig = RdsConfig(app, "Rds", vpcConfig.vpc)
+    rdsConfig.addDependency(vpcConfig)
+
+    val service01Config = Service01Config(app, "Service01", clusterConfig.cluster)
+    service01Config.addDependency(clusterConfig)
+    service01Config.addDependency(rdsConfig)
 
     app.synth()
 }

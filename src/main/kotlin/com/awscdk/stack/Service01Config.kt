@@ -12,7 +12,7 @@ import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskI
 import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.amazon.awscdk.services.logs.LogGroup;
 
-class Service01StackConfig(scope: Construct, id: String, props: StackProps?, cluster: Cluster) :
+class Service01Config(scope: Construct, id: String, props: StackProps?, cluster: Cluster) :
     Stack(scope, id, props) {
     constructor(scope: Construct, id: String, cluster: Cluster) : this(scope, id, null, cluster)
 

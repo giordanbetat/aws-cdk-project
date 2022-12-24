@@ -6,7 +6,7 @@ import software.amazon.awscdk.services.ec2.Vpc
 import software.amazon.awscdk.services.ecs.Cluster
 import software.constructs.Construct
 
-class ClusterStackConfig(scope: Construct, id: String, props: StackProps?, vpc: Vpc) :
+class ClusterConfig(scope: Construct, id: String, props: StackProps?, vpc: Vpc) :
     Stack(scope, id, props) {
     val cluster: Cluster
 

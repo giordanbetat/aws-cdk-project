@@ -5,5 +5,5 @@ import software.amazon.awscdk.StackProps
 
 import software.constructs.Construct
 
-class AwsCdkStackConfig @JvmOverloads constructor(scope: Construct, id: String, props: StackProps? = null) :
+class AwsCdkConfig @JvmOverloads constructor(scope: Construct, id: String, props: StackProps? = null) :
     Stack(scope, id, props)
