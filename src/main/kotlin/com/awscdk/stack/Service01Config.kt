@@ -66,6 +66,7 @@ class Service01Config(scope: Construct, id: String, props: StackProps?, cluster:
                 .maxCapacity(4)
                 .build()
         )
+
         scalableTaskCount.scaleOnCpuUtilization(
             "Service01AutoScaling", CpuUtilizationScalingProps.builder()
                 .targetUtilizationPercent(50)
@@ -73,5 +74,7 @@ class Service01Config(scope: Construct, id: String, props: StackProps?, cluster:
                 .scaleOutCooldown(Duration.seconds(60))
                 .build()
         )
+
+        exampleTopic.topic.grantPublish(service01.taskDefinition.taskRole)
     }
 }
