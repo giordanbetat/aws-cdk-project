@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 
     val snsConfig = SnsConfig(app, "Sns")
 
-    val service01Config = Service01Config(app, "Service01", clusterConfig.cluster)
+    val service01Config = Service01Config(app, "Service01", clusterConfig.cluster, snsConfig.exampleTopic)
     service01Config.addDependency(clusterConfig)
     service01Config.addDependency(rdsConfig)
     service01Config.addDependency(snsConfig);
