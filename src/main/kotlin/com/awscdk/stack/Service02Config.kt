@@ -1,7 +1,11 @@
 package com.awscdk.stack
 
-import software.amazon.awscdk.*
+import software.amazon.awscdk.Duration
+import software.amazon.awscdk.RemovalPolicy
+import software.amazon.awscdk.Stack
+import software.amazon.awscdk.StackProps
 import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps
+import software.amazon.awscdk.services.dynamodb.Table
 import software.amazon.awscdk.services.ecs.*
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions
@@ -14,10 +18,17 @@ import software.amazon.awscdk.services.sqs.Queue
 import software.constructs.Construct
 
 
-class Service02Config(scope: Construct, id: String, props: StackProps?, cluster: Cluster, exampleTopic: SnsTopic) :
+class Service02Config(
+    scope: Construct,
+    id: String,
+    props: StackProps?,
+    cluster: Cluster,
+    exampleTopic: SnsTopic,
+    exampleTable: Table
+) :
     Stack(scope, id, props) {
-    constructor(scope: Construct, id: String, cluster: Cluster, exampleTopic: SnsTopic) :
-            this(scope, id, null, cluster, exampleTopic)
+    constructor(scope: Construct, id: String, cluster: Cluster, exampleTopic: SnsTopic, exampleTable: Table) :
+            this(scope, id, null, cluster, exampleTopic, exampleTable)
 
     init {
 
@@ -98,5 +109,6 @@ class Service02Config(scope: Construct, id: String, props: StackProps?, cluster:
         )
 
         exampleTopicQueue.grantConsumeMessages(service02.taskDefinition.taskRole)
+        exampleTable.grantReadWriteData(service02.taskDefinition.taskRole)
     }
 }

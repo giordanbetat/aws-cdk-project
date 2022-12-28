@@ -23,7 +23,7 @@ fun main() {
     service01Config.addDependency(rdsConfig)
     service01Config.addDependency(snsConfig)
 
-    val service02Config = Service02Config(app, "Service02", clusterConfig.cluster, snsConfig.exampleTopic)
+    val service02Config = Service02Config(app, "Service02", clusterConfig.cluster, snsConfig.exampleTopic, ddbConfig.exampleTable)
     service02Config.addDependency(clusterConfig)
     service02Config.addDependency(snsConfig)
     service02Config.addDependency(ddbConfig)
