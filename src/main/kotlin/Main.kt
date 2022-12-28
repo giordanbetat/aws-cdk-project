@@ -16,6 +16,8 @@ fun main() {
 
     val snsConfig = SnsConfig(app, "Sns")
 
+    val ddbConfig = DdbConfig(app, "Ddb")
+
     val service01Config = Service01Config(app, "Service01", clusterConfig.cluster, snsConfig.exampleTopic)
     service01Config.addDependency(clusterConfig)
     service01Config.addDependency(rdsConfig)
@@ -24,6 +26,7 @@ fun main() {
     val service02Config = Service02Config(app, "Service02", clusterConfig.cluster, snsConfig.exampleTopic)
     service02Config.addDependency(clusterConfig)
     service02Config.addDependency(snsConfig)
+    service02Config.addDependency(ddbConfig)
 
     app.synth()
 }
